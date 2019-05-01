@@ -1,0 +1,15 @@
+config:
+  target: "http://localhost:3004/tracks"
+  # plugins:
+  #   expect: {}
+  phases:
+    - duration: 120
+      arrivalRate: 1000
+scenarios:
+  - name: Get top tracks
+    flow:
+      - get:
+          url: "/top"
+          # expect:
+          #   - statusCode: 200
+          #   - contentType: json

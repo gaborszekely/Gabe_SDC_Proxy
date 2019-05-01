@@ -1,11 +1,11 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/style.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <title>FEC Demo</title>
+    <title>Spotifly | Systems Design Capstone</title>
   </head>
   <body>
     <div id="main">
@@ -14,6 +14,17 @@
       <div id="Bodyalbum"></div>
       <div id="relatedartists"></div>
     </div>
-    <script src="http://localhost:3001/bundle.js"></script>
+
+    <!-- Gabe - Top Tracks Component -->
+    <script src="http://sdc-tcp-load-balancer-bcd1fa8871a2a068.elb.us-east-2.amazonaws.com/bundle.js" crossorigin="anonymous"></script>
+
+    <!-- Jared - Related Artists -->
+    <script src="http://related-artists-network-lb-d7115e4731d37adf.elb.us-east-1.amazonaws.com/app.js" crossorigin="anonymous"></script>
+
+    <!-- Pete - Albums Component -->
+    <script src="http://artist-albums-12-0fde16dd76ec6186.elb.us-west-1.amazonaws.com/app.js" crossorigin="anonymous"></script>
+
+    <!-- Rick - Header Component -->
+    <script src="http://ec2-52-14-174-177.us-east-2.compute.amazonaws.com/app.js" crossorigin="anonymous"></script>
   </body>
 </html>

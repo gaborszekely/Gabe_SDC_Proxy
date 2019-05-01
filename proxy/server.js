@@ -1,68 +1,64 @@
-const express = require("express");
-const morgan = require("morgan");
-const path = require("path");
+require('newrelic');
+const express = require('express');
+const path = require('path');
+const cors = require('cors');
+const httpProxy = require('http-proxy');
+
 const app = express();
-const cors = require("cors");
 const port = process.env.PORT || 3004;
-const httpProxy = require("http-proxy");
 
 app.use(cors());
-app.use(morgan("dev"));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
 const proxy = httpProxy.createProxyServer();
 
-const endpointConfig = target => (req, res) => {
-  proxy.web(req, res, { target });
-};
+const proxyServices = [
+  {
+    member: 'Gabe',
+    endpoint: '/tracks',
+    url:
+      'http://sdc-tcp-load-balancer-bcd1fa8871a2a068.elb.us-east-2.amazonaws.com/',
+    bundle: 'bundle.js',
+    component: 'Top tracks component',
+  },
+  {
+    member: 'Jared',
+    endpoint: '/artists',
+    url:
+      'http://related-artists-network-lb-d7115e4731d37adf.elb.us-east-1.amazonaws.com',
+    bundle: 'app.js',
+    component: 'Related artists component',
+  },
+  {
+    member: 'Jared',
+    endpoint: '/icon',
+    url:
+      'http://related-artists-network-lb-d7115e4731d37adf.elb.us-east-1.amazonaws.com',
+    bundle: 'app.js',
+    component: 'Related artists component',
+  },
+  {
+    member: 'Pete',
+    endpoint: '/albums',
+    url:
+      'http://artist-albums-12-0fde16dd76ec6186.elb.us-west-1.amazonaws.com/',
+    bundle: '',
+    component: 'Albums',
+  },
+  {
+    member: 'Rick',
+    endpoint: '/data',
+    url: 'http://ec2-52-14-174-177.us-east-2.compute.amazonaws.com/',
+    bundle: 'app.js',
+    component: 'Header component',
+  },
+];
 
-app.all("/tracks/*", endpointConfig("http://localhost:3000"));
+const endpointConfig = target => (req, res) => proxy.web(req, res, { target });
 
-app.listen(port, () => console.log('Server started on port ' + port));
-/*
-app.all("/data/artist/*", (req, res) => {
-  proxy.web(req, res, {
-    target: "http://ec2-18-191-230-44.us-east-2.compute.amazonaws.com/"
-  });
+proxyServices.forEach(({ endpoint, url }) => {
+  app.all(`${endpoint}`, endpointConfig(url));
+  app.all(`${endpoint}/*`, endpointConfig(url));
 });
 
-app.all("/data/toptracks", (req, res) => {
-  proxy.web(req, res, {
-    target: "http://ec2-18-191-178-115.us-east-2.compute.amazonaws.com/"
-  });
-});
-
-app.get('/data/albumswithartist/*', (req, res) => {
-  proxy.web(req, res, {
-    target: 'http://ec2-3-17-177-153.us-east-2.compute.amazonaws.com/'
-  });
-});
-
-app.get('/data/albumsbyartist/*', (req, res) => {
-  proxy.web(req, res, {
-    target: 'http://ec2-3-17-177-153.us-east-2.compute.amazonaws.com/'
-  });
-});
-
-app.get('/data/epswithartist/*', (req, res) => {
-  proxy.web(req, res, {
-    target: 'http://ec2-3-17-177-153.us-east-2.compute.amazonaws.com/'
-  });
-});
-
-app.get('/data/compilationswithartist/*', (req, res) => {
-  proxy.web(req, res, {
-    target: 'http://ec2-3-17-177-153.us-east-2.compute.amazonaws.com/'
-  });
-});
-
-app.all("/data/artist", (req, res) => {
-  proxy.web(req, res, {
-    target: "http://ec2-34-227-148-64.compute-1.amazonaws.com/"
-  });
-});
-
-app.listen(port, () => {
-  console.log(`server running at: http://localhost:${port}`);
-});
-*/
+app.listen(port, () => console.log(`Server started on port ${port}`));

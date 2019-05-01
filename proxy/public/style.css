@@ -1,3 +1,18 @@
+div,
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: Montserrat !important;
+}
+
+body {
+  overflow-x: hidden;
+}
+
 #main {
   display: flex;
   flex-direction: column;
@@ -7,7 +22,8 @@ div#content {
   padding-right: 20px;
 }
 
-div.sc-bdVaJa, div.kDGqVA {
+div.sc-bdVaJa,
+div.kDGqVA {
   z-index: 2;
 }
 
@@ -34,4 +50,25 @@ div.ArtistList__Icon-sc-18aftq2-1 {
 
 img.User {
   margin-top: 6px;
+}
+
+#relatedartists {
+  font-family: Montserrat !important;
+  padding-bottom: 80px;
+}
+
+.Artist__TextStyle-sc-1vaqhjg-1 {
+  font-size: 14px !important;
+  margin-top: 15px;
+}
+
+.Sidebar {
+  height: 100% !important;
+}
+
+.recentName.Saw.Theme.playlist,
+.recentName.Some.Music.album,
+.recentName.Nekrogoblikon.artist,
+.optionText.imgText {
+  cursor: pointer;
 }
